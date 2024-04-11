@@ -1,10 +1,14 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.0.0
 MinimumVisualStudioVersion = 16.0.0.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorOpenIddict", "BlazorOpenIddict\BlazorOpenIddict.csproj", "{FAABB02D-F3C3-4039-BAD2-A0644490DF3D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorOpenIddict.Client", "BlazorOpenIddict.Client\BlazorOpenIddict.Client.csproj", "{FFE0381F-E500-4F82-A73E-88C628BAAF31}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Velusia", "Velusia", "{37569E13-8A98-4AE3-8132-C08853915308}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Velusia.Server", "Velusia\Velusia.Server\Velusia.Server.csproj", "{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,11 +44,26 @@ Global
 		{FAABB02D-F3C3-4039-BAD2-A0644490DF3D}.Release|x64.Build.0 = Release|Any CPU
 		{FAABB02D-F3C3-4039-BAD2-A0644490DF3D}.Release|x86.ActiveCfg = Release|Any CPU
 		{FAABB02D-F3C3-4039-BAD2-A0644490DF3D}.Release|x86.Build.0 = Release|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Debug|x64.Build.0 = Debug|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Debug|x86.Build.0 = Debug|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Release|x64.ActiveCfg = Release|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Release|x64.Build.0 = Release|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Release|x86.ActiveCfg = Release|Any CPU
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {164A9CFA-2986-4AB8-BD6C-E76861903F3D}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B8C9CAF3-A2D7-4AAE-AC0A-3EF54320EE51} = {37569E13-8A98-4AE3-8132-C08853915308}
 	EndGlobalSection
 EndGlobal
