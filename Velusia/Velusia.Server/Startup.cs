@@ -6,8 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Logging;
 using Quartz;
 using Velusia.Server.Data;
+using System.IdentityModel.Tokens.Jwt;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Velusia.Server;
@@ -38,16 +40,34 @@ public class Startup
         services.AddDatabaseDeveloperPageExceptionFilter();
 
         // Register the Identity services.
-        services.AddIdentity<ApplicationUser, IdentityRole>(options => 
+        services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<ApplicationDbContext>()
+            .AddDefaultTokenProviders()
+            .AddDefaultUI();
+
+        services.Configure<IdentityOptions>(options =>
         {
+            // Dev
             options.SignIn.RequireConfirmedAccount = false;
             options.Password.RequireUppercase = false;
             options.Password.RequireNonAlphanumeric = false;
             options.Password.RequiredLength = 5;
-        })
-            .AddEntityFrameworkStores<ApplicationDbContext>()
-            .AddDefaultTokenProviders()
-            .AddDefaultUI();
+
+            // Configure Identity to use the same JWT claims as OpenIddict instead
+            // of the legacy WS-Federation claims it uses by default (ClaimTypes),
+            // which saves you from doing the mapping in your authorization controller.
+            options.ClaimsIdentity.UserNameClaimType = Claims.Name;
+            options.ClaimsIdentity.UserIdClaimType = Claims.Subject;
+            options.ClaimsIdentity.RoleClaimType = Claims.Role;
+            options.ClaimsIdentity.EmailClaimType = Claims.Email;
+
+            // Note: to require account confirmation before login,
+            // register an email sender service (IEmailSender) and
+            // set options.SignIn.RequireConfirmedAccount to true.
+            //
+            // For more information, visit https://aka.ms/aspaccountconf.
+            options.SignIn.RequireConfirmedAccount = false;
+        });
 
         // OpenIddict offers native integration with Quartz.NET to perform scheduled tasks
         // (like pruning orphaned authorizations/tokens from the database) at regular intervals.
@@ -158,6 +178,9 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        IdentityModelEventSource.ShowPII = true;
+        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
