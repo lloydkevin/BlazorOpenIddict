@@ -35,11 +35,13 @@ public class Worker : IHostedService
                 DisplayName = "MVC client application",
                 RedirectUris =
                 {
-                    new Uri("https://localhost:44338/callback/login/local")
+                    new Uri("https://localhost:44338/callback/login/local"),
+                    new Uri("https://localhost:7193/signin-oidc"),
                 },
                 PostLogoutRedirectUris =
                 {
-                    new Uri("https://localhost:44338/callback/logout/local")
+                    new Uri("https://localhost:44338/callback/logout/local"),
+                    new Uri("https://localhost:7193/signout-callback-oidc"),
                 },
                 Permissions =
                 {

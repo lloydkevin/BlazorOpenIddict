@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Microsoft.AspNetCore.Routing;
@@ -17,7 +18,7 @@ internal static class LoginLogoutEndpointRouteBuilderExtensions
         // the user will automatically be signed back in the next time they visit a page that requires authentication
         // without being able to choose another account.
         group.MapPost("/logout", ([FromForm] string? returnUrl) => TypedResults.SignOut(GetAuthProperties(returnUrl),
-            [CookieAuthenticationDefaults.AuthenticationScheme, "MicrosoftOidc"]));
+            [CookieAuthenticationDefaults.AuthenticationScheme, OpenIdConnectDefaults.AuthenticationScheme]));
 
         return group;
     }

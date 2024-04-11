@@ -29,7 +29,7 @@ public class Startup
         services.AddDbContext<ApplicationDbContext>(options =>
         {
             // Configure the context to use sqlite.
-            options.UseSqlite($"Filename={Path.Combine(Path.GetTempPath(), "openiddict-velusia-server.sqlite3")}");
+            options.UseSqlite($"Filename=openiddict-velusia-server.sqlite3");
 
             // Register the entity sets needed by OpenIddict.
             // Note: use the generic overload if you need
@@ -73,7 +73,7 @@ public class Startup
         // (like pruning orphaned authorizations/tokens from the database) at regular intervals.
         services.AddQuartz(options =>
         {
-            options.UseMicrosoftDependencyInjectionJobFactory();
+            //options.UseMicrosoftDependencyInjectionJobFactory();
             options.UseSimpleTypeLoader();
             options.UseInMemoryStore();
         });
@@ -146,7 +146,10 @@ public class Startup
 
                 // Note: this sample only uses the authorization code flow but you can enable
                 // the other flows if you need to support implicit, password or client credentials.
-                options.AllowAuthorizationCodeFlow();
+                options.AllowAuthorizationCodeFlow()
+                    .AllowClientCredentialsFlow()
+                    .AllowHybridFlow()
+                    .AllowRefreshTokenFlow();
 
                 // Register the signing and encryption credentials.
                 options.AddDevelopmentEncryptionCertificate()
