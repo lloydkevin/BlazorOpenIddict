@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.JsonWebTokens;
+using BlazorOpenIddict.Client;
+using BlazorOpenIddict.Weather;
 
 // https://damienbod.com/2024/01/03/securing-a-blazor-server-application-using-openid-connect-and-security-headers/
 // https://github.com/damienbod/BlazorServerOidc
@@ -25,6 +27,9 @@ builder.Services.AddCascadingAuthenticationState();
 // builder.Services.AddScoped<IdentityUserAccessor>();
 // builder.Services.AddScoped<IdentityRedirectManager>();
 // builder.Services.AddScoped<AuthenticationStateProvider, PersistingRevalidatingAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider, PersistingAuthenticationStateProvider>();
+
+builder.Services.AddScoped<IWeatherForecaster, ServerWeatherForecaster>();
 
 builder.Services.AddAuthentication(options =>
     {
@@ -43,7 +48,8 @@ builder.Services.AddAuthentication(options =>
         options.GetClaimsFromUserInfoEndpoint = true;
         options.TokenValidationParameters = new TokenValidationParameters
         {
-            NameClaimType = "name"
+            NameClaimType = "name",
+            RoleClaimType = "role"
         };
     });
     //.AddIdentityCookies();
@@ -97,5 +103,24 @@ app.MapRazorComponents<App>()
 // app.MapAdditionalIdentityEndpoints();
 
 app.MapGroup("/api/account").MapLoginAndLogout();
+
+var summaries = new[]
+{
+    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
+};
+
+app.MapGet("/weather-forecast", () =>
+{
+    var forecast = Enumerable.Range(1, 5).Select(index =>
+        new WeatherForecast
+        (
+            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
+            Random.Shared.Next(-20, 55),
+            summaries[Random.Shared.Next(summaries.Length)]
+        ))
+        .ToArray();
+    return forecast;
+}).RequireAuthorization();
+
 
 app.Run();

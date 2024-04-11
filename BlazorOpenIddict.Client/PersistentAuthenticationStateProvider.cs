@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Components.Authorization;
 
 namespace BlazorOpenIddict.Client;
 
+// https://github.com/dotnet/blazor-samples/blob/main/8.0/BlazorWebAppOidcBff/BlazorWebAppOidc.Client/PersistentAuthenticationStateProvider.cs
+// https://github.com/dotnet/blazor-samples/blob/main/8.0/BlazorWebAppOidcBff/BlazorWebAppOidc.Client/PersistentAuthenticationStateProvider.cs
+
 // This is a client-side AuthenticationStateProvider that determines the user's authentication state by
 // looking for data persisted in the page when it was rendered on the server. This authentication state will
 // be fixed for the lifetime of the WebAssembly application. So, if the user needs to log in or out, a full
@@ -26,14 +29,7 @@ internal class PersistentAuthenticationStateProvider : AuthenticationStateProvid
             return;
         }
 
-        Claim[] claims = [
-            new Claim(ClaimTypes.NameIdentifier, userInfo.UserId),
-            new Claim(ClaimTypes.Name, userInfo.Email),
-            new Claim(ClaimTypes.Email, userInfo.Email) ];
-
-        authenticationStateTask = Task.FromResult(
-            new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity(claims,
-                authenticationType: nameof(PersistentAuthenticationStateProvider)))));
+        authenticationStateTask = Task.FromResult(new AuthenticationState(userInfo.ToClaimsPrincipal()));
     }
 
     public override Task<AuthenticationState> GetAuthenticationStateAsync() => authenticationStateTask;
